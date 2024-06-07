@@ -1,7 +1,7 @@
 ---
 title: "W1 Test write-up"
 description: "Write-up for 6/6 challenge in W1 test"
-date: 2024-05-31
+date: 2024-06-31
 tags:
     - 'PWN'
     - 'CTF'
