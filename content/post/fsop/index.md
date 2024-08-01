@@ -109,7 +109,6 @@ _IO_wfile_underflow (FILE *fp)
 The exploit manages to call `__libio_codecvt_in`, which take the first argument being `_IO_2_1_stdout_->_codecvt`. I'll talk later what's inside `__libio_codecvt_in`. But now, take a look at how the exploit bypass all the flag check to get to its desired call.
 ### Bypass flag check
 There're 4 conditions need to be met to reach to `__libio_codecvt_in`.
-#### `_IO_EOF_SEEN` and `_IO_NO_READS`
 ```c 
 // https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/libio.h#L70
 #define _IO_MAGIC         0xFBAD0000 /* Magic number */
