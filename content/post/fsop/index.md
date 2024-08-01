@@ -3,10 +3,10 @@ title: "FSOP code execution"
 description: "My note for studying code execution through FSOP"
 date: 2024-08-01
 tags: 
-	- 'CTF'
-	- 'PWN'
-	- '2024'
-	- 'Technique'
+  - 'CTF'
+  - 'PWN'
+  - '2024'
+  - 'Technique'
 ---
 
 # FSOP - code execution
