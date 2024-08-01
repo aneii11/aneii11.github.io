@@ -9,7 +9,6 @@ tags:
   - 'Technique'
 ---
 
-# FSOP - code execution
 There's probably many blogs about file struct exploit that cover the subject of arbitrary read and write, but not about hijacking vtable into code execution. With that being said, this blogpost will talk about two ways to execute code using FSOP, which I usually use in CTF challenges.
 ## Targeting `_IO_2_1_stdout_`
 The original exploit was written by [nobodyisnobody](https://github.com/nobodyisnobody/docs/tree/main/code.execution.on.last.libc#3---the-fsop-way-targetting-stdout):
@@ -234,7 +233,7 @@ struct __gconv_step
 Take a look back at my gdb, at offset 0x28 from `*gs` is gadget `add rdi, 0x10, jmp rcx`. Our current `rdi` is at `*gs`, and `+0x10` means `rdi` will contain `"/bin/sh"`. Meanwhile, `rcx` already pointed to `system`. Voila.
 
 What a masterpiece.
-### Target `wide_data`
+## Targeting `wide_data`
 This exploit came from pwn.college **file struct exploit** module:
 ![image](https://hackmd.io/_uploads/HkX2gWtKA.png)
 I follow the given instruction to create exploit code myself. This exploit script is used for level 7
@@ -271,6 +270,7 @@ chall.sendafter(b'name.\n',fake_vtable)
 chall.sendafter(b'struct.\n\n', bytes(filestr))
 chall.interactive()
 ```
+### Call `_IO_wfile_overflow`
 First, let's see the flow of `_IO_wfile_overflow`:
 ```c 
 // https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/wfileops.c#L406
@@ -304,6 +304,7 @@ We just need it to call `_IO_wdoallocbuf`, and again, we have to set some flags 
 * Turn off flag for `_IO_NO_WRITES`, which is 0x0008. 
 * Turn off flag for `_IO_CURRENTLY_PUTTING`, which is 0x0800
 * `f->_wide_data->_IO_write_base == nullptr`. This one is quite easy to set, since the challenge give us 2 buffer.
+### Call `_IO_wdoallocbuf`
 If all conditions met, it will call `_IO_wdoallocbuf`:
 ```c 
 void
