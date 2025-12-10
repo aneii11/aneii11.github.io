@@ -1,7 +1,8 @@
 # Change baseurl before deploy
 baseurl = "https://aneii11.github.io"
 languageCode = "en-us"
-paginate = 5
+[pagination]
+  paperSize = 5
 title = "an3ii11"
 
 # Theme i18n support
