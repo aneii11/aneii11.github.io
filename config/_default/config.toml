@@ -16,3 +16,6 @@ hasCJKLanguage = false
 # Change it to your Disqus shortname before using
 disqusShortname = "an3ii11"
 googleAnalytics = ""
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
